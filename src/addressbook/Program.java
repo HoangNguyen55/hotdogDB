@@ -122,7 +122,7 @@ public class Program {
     {
         try
         {
-            String sql = "INSERT INTO Contact(CUSOMTER_ID, CUSTOMER_FIRST_NAME, CUSTOMER_LAST_NAME, CUSTOMER_FAVORITE_MEAL) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO HD_CUSTOMER(CUSOMTER_ID, CUSTOMER_FIRST_NAME, CUSTOMER_LAST_NAME, CUSTOMER_FAVORITE_MEAL) VALUES (?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1, customerID);
             stmt.setString(2, customerFirstName);
@@ -130,7 +130,7 @@ public class Program {
             stmt.setString(4, customerFavoriteMeal);
             int rowInserted = stmt.executeUpdate();
             if (rowInserted > 0) {
-                System.out.println("A new contact was inserted successfully!");
+                System.out.println("A new customer was inserted successfully!");
             }
         }
         catch (SQLException e)
@@ -182,4 +182,137 @@ public class Program {
             System.err.println(e.getMessage());
         }
     }
+    
+    private static void selectOrder()
+    {
+        try
+        {
+            Statement stmt = conn.createStatement();
+            ResultSet results = stmt.executeQuery("select * from HD_ORDER");
+            ResultSetMetaData rsmd = results.getMetaData();
+            //Get number of columns in the result set
+            int numberCols = rsmd.getColumnCount();
+            //Print column names as header
+            for (int i = 1; i <= numberCols; i++)
+            {
+                //print Column Names
+                System.out.printf("%12s", rsmd.getColumnLabel(i));
+            }
+            System.out.println();
+            //Print the results
+            while(results.next())
+            {
+                for (int i = 1; i <= numberCols; i++)
+                {
+                    System.out.printf("%12s", results.getString(i));
+                }
+                System.out.println();
+            }
+            results.close();
+            stmt.close();
+        }
+        catch (SQLException e)
+        {
+            System.err.println("Got an exception! ");
+            System.err.println(e.getMessage());
+        }
+    }
+    
+    /**
+      This method updates an existing contact if order ID matches
+    */
+    private static void updateOrder(int orderID, int orderPrice, String orderDateTime, String itemName, int customerID)
+    {
+        try
+        {
+            String sql = "UPDATE HD_ORDER SET ORDER_PRICE=?, ORDER_DATE_TIME=?, ITEM_NAME=?, CUSTOMER_ID=? WHERE ORDER_ID=?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, orderPrice);
+            stmt.setString(2, orderDateTime);
+            stmt.setString(3, itemName);
+            stmt.setInt(4, customerID);
+            stmt.setInt(5, orderID);
+            int rowsUpdated = stmt.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("An existing customer was updated successfully!");
+            }
+        }
+        catch (SQLException e)
+        {
+            System.err.println("Got an exception! ");
+            System.err.println(e.getMessage());
+        }
+    }
+    
+    /**
+      This method inserts a new order
+    */
+    private static void insertOrder(int orderID, int orderPrice, String orderDateTime, String itemName, int customerID)
+    {
+        try
+        {
+            String sql = "INSERT INTO HD_ORDER(ORDER_ID, ORDER_PRICE, ORDER_DATE_TIME, ITEM_NAME, CUSTOMER_ID) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, orderID);
+            stmt.setInt(2, orderPrice);
+            stmt.setString(3, orderDateTime);
+            stmt.setString(4, itemName);
+            stmt.setInt(5, customerID);
+            int rowInserted = stmt.executeUpdate();
+            if (rowInserted > 0) {
+                System.out.println("A new order was inserted successfully!");
+            }
+        }
+        catch (SQLException e)
+        {
+            System.err.println("Got an exception! ");
+            System.err.println(e.getMessage());
+        }
+    }
+    
+    /**
+      This method deletes a single customer if the customer id matches
+    */
+    private static void deleteOrder(int orderID)
+    {
+        try
+        {
+            String sql = "DELETE FROM HD_ORDER WHERE CUSTOMER_ID = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, orderID);
+            int rowsDeleted = stmt.executeUpdate();
+            if (rowsDeleted > 0) {
+                System.out.println("An order was deleted successfully!");
+            }
+        }
+        catch (SQLException e)
+        {
+            System.err.println("Got an exception! ");
+            System.err.println(e.getMessage());
+        }
+    }
+    
+    /**
+      This method deletes all the Customers
+    */
+    private static void deleteOrders()
+    {
+        try
+        {
+            String sql = "DELETE FROM HD_ORDER";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            int rowsDeleted = stmt.executeUpdate();
+            if (rowsDeleted > 0) {
+                System.out.println("All orders are deleted!");
+            }
+        }
+        catch (SQLException e)
+        {
+            System.err.println("Got an exception! ");
+            System.err.println(e.getMessage());
+        }
+    }
+    
 }
+
+    

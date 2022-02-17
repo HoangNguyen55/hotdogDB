@@ -17,7 +17,7 @@ import java.sql.*;
 public class Program {
 
     //Make sure you have the correct path for your derby embedded database in below string
-    private static final String DBURL = "jdbc:derby:hotdogDB;create=true;user=hotdogDB;password=hotdogDB";
+    private static final String DBURL = "jdbc:derby:hotdogDB1;create=true;user=root;password=root";
     //jdbc connection
     private static Connection conn = null;
     

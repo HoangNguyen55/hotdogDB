@@ -17,19 +17,19 @@ import java.sql.*;
 public class Program {
 
     //Make sure you have the correct path for your derby embedded database in below string
-    private static final String DBURL = "jdbc:derby:addressbookdb;create=true;user=addressbookdb;password=addressbookdb";
+    private static final String DBURL = "jdbc:derby:hotdogDB;create=true;user=hotdogDB;password=hotdogDB";
     //jdbc connection
     private static Connection conn = null;
     
     public static void main(String[] args) {
         createConnection();//Creating a connection to Derby Embedded database
-        deleteContacts();//Flushing contacts table before changing anything
-        insertContact(1, "Alice", "Doe", "2155559893");//Inserting a new record
-        insertContact(2, "Yi", "Duan", "4243323231");//Inserting a new record
-        insertContact(3, "Michael", "Faraday", "3343321050");//Inserting a new record
-        updateContact(1, "Alice", "Souza", "2155559893");//Updating an existing record
-        deleteContact(3);//Delete an existing record
-        selectContacts();//See the final table
+        deleteCustomers();//Flushing contacts table before changing anything
+        insertCustomer(1, "Alice", "Doe", "2155559893");//Inserting a new record
+        insertCustomer(2, "Yi", "Duan", "4243323231");//Inserting a new record
+        insertCustomer(3, "Michael", "Faraday", "3343321050");//Inserting a new record
+        updateCustomer(1, "Alice", "Souza", "2155559893");//Updating an existing record
+        deleteCustomer(3);//Delete an existing record
+        selectCustomer();//See the final table
     }
     
     /**
@@ -55,12 +55,12 @@ public class Program {
     /**
       This method prints the whole table to the command line in a tabular format
     */
-    private static void selectContacts()
+    private static void selectCustomer()
     {
         try
         {
             Statement stmt = conn.createStatement();
-            ResultSet results = stmt.executeQuery("select * from contact");
+            ResultSet results = stmt.executeQuery("select * from HD_CUSTOMER");
             ResultSetMetaData rsmd = results.getMetaData();
             //Get number of columns in the result set
             int numberCols = rsmd.getColumnCount();
@@ -91,21 +91,21 @@ public class Program {
     }
     
     /**
-      This method updates an existing contact if contact ID matches
+      This method updates an existing contact if customer ID matches
     */
-    private static void updateContact(int contactID, String firstName, String lastName, String phoneNumber)
+    private static void updateCustomer(int customerID, String customerFirstName, String customerLastName, String customerFavoriteMeal)
     {
         try
         {
-            String sql = "UPDATE Contact SET firstName=?, lastName=?, phoneNumber=? WHERE id=?";
+            String sql = "UPDATE HD_CUSTOMER SET CUSTOMER_FIRST_NAME=?, CUSTOMER_LAST_NAME=?, CUSTOMER_FAVORITE_MEAL=? WHERE CUSTOMER_ID=?";
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setString(1, firstName);
-            stmt.setString(2, lastName);
-            stmt.setString(3, phoneNumber);
-            stmt.setInt(4, contactID);
+            stmt.setString(1, customerFirstName);
+            stmt.setString(2, customerLastName);
+            stmt.setString(3, customerFavoriteMeal);
+            stmt.setInt(4, customerID);
             int rowsUpdated = stmt.executeUpdate();
             if (rowsUpdated > 0) {
-                System.out.println("An existing contact was updated successfully!");
+                System.out.println("An existing customer was updated successfully!");
             }
         }
         catch (SQLException e)
@@ -116,18 +116,18 @@ public class Program {
     }
     
     /**
-      This method inserts a new contact
+      This method inserts a new customer
     */
-    private static void insertContact(int contactID, String firstName, String lastName, String phoneNumber)
+    private static void insertCustomer(int customerID, String customerFirstName, String customerLastName, String customerFavoriteMeal)
     {
         try
         {
-            String sql = "INSERT INTO Contact(ID, firstName, lastName, phoneNumber) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO Contact(CUSOMTER_ID, CUSTOMER_FIRST_NAME, CUSTOMER_LAST_NAME, CUSTOMER_FAVORITE_MEAL) VALUES (?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, contactID);
-            stmt.setString(2, firstName);
-            stmt.setString(3, lastName);
-            stmt.setString(4, phoneNumber);
+            stmt.setInt(1, customerID);
+            stmt.setString(2, customerFirstName);
+            stmt.setString(3, customerLastName);
+            stmt.setString(4, customerFavoriteMeal);
             int rowInserted = stmt.executeUpdate();
             if (rowInserted > 0) {
                 System.out.println("A new contact was inserted successfully!");
@@ -141,18 +141,18 @@ public class Program {
     }
     
     /**
-      This method deletes a single contact if the contactID matches
+      This method deletes a single customer if the customer id matches
     */
-    private static void deleteContact(int contactID)
+    private static void deleteCustomer(int customerID)
     {
         try
         {
-            String sql = "DELETE FROM Contact WHERE ID = ?";
+            String sql = "DELETE FROM HD_CUSTOMER WHERE CUSTOMER_ID = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, contactID);
+            stmt.setInt(1, customerID);
             int rowsDeleted = stmt.executeUpdate();
             if (rowsDeleted > 0) {
-                System.out.println("A contact was deleted successfully!");
+                System.out.println("A customer was deleted successfully!");
             }
         }
         catch (SQLException e)
@@ -163,17 +163,17 @@ public class Program {
     }
     
     /**
-      This method deletes all the contacts
+      This method deletes all the Customers
     */
-    private static void deleteContacts()
+    private static void deleteCustomers()
     {
         try
         {
-            String sql = "DELETE FROM Contact";
+            String sql = "DELETE FROM HD_CUSTOMER";
             PreparedStatement stmt = conn.prepareStatement(sql);
             int rowsDeleted = stmt.executeUpdate();
             if (rowsDeleted > 0) {
-                System.out.println("All contacts are deleted!");
+                System.out.println("All customers are deleted!");
             }
         }
         catch (SQLException e)

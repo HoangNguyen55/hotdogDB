@@ -23,11 +23,11 @@ public class Program {
     
     public static void main(String[] args) {
         createConnection();//Creating a connection to Derby Embedded database
-        deleteCustomers();//Flushing contacts table before changing anything
-        insertCustomer(1, "Alice", "Doe", "2155559893");//Inserting a new record
-        insertCustomer(2, "Yi", "Duan", "4243323231");//Inserting a new record
-        insertCustomer(3, "Michael", "Faraday", "3343321050");//Inserting a new record
-        updateCustomer(1, "Alice", "Souza", "2155559893");//Updating an existing record
+        deleteCustomers();//Flushing customer table before changing anything
+        insertCustomer(1, "Alice", "Doe", "Hot Dog");//Inserting a new record
+        insertCustomer(2, "Yi", "Duan", "Combo");//Inserting a new record
+        insertCustomer(3, "Michael", "Faraday", "Drink");//Inserting a new record
+        updateCustomer(1, "Alice", "Doe", "Combo");//Updating an existing record
         deleteCustomer(3);//Delete an existing record
         selectCustomer();//See the final table
     }
